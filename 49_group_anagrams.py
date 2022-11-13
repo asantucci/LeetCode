@@ -1,5 +1,8 @@
 from collections import defaultdict
 
+# Solution requires sorting each input string
+# O(n * m log m) where n is number of input strings
+# and m is the length of the largest string.
 class Solution(object):
     def isAnagram(self, s, t):
         """
@@ -33,3 +36,25 @@ class Solution(object):
             else:
                 ans[sorted_word] = [word]
         return [ans[key] for key in ans]
+
+# Here's another "faster" solution, O(n*m)
+# The core idea is that we simply count the number of characters
+# of each type (of character) and then use a count-pattern
+# (of length the size of the alphabet) as key in a dictionary
+# that creates, for each key, a listing of strings with equal
+# count-pattern, i.e. a listing of anagrams.
+from collections import defaultdict
+
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        ans = defaultdict(list)
+        for s in strs:
+            count = [0] * 26
+            for c in s:
+                count[ord(c) - ord("a")] += 1
+            ans[tuple(count)].append(s)
+        return ans.values()
